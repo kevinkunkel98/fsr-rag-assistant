@@ -4,23 +4,30 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 @Service
 public class ChatService {
 
     private final OllamaChatModel ollamaChatModel;
     private final VectorStore vectorStore;
+    private final String promptTemplate;
 
-    public ChatService(OllamaChatModel ollamaChatModel, VectorStore vectorStore) {
+    public ChatService(OllamaChatModel ollamaChatModel, VectorStore vectorStore) throws Exception {
         this.ollamaChatModel = ollamaChatModel;
         this.vectorStore = vectorStore;
+        this.promptTemplate = Files.readString(
+                new ClassPathResource("prompt-engineering/string-template.txt").getFile().toPath(),
+                StandardCharsets.UTF_8
+        );
     }
 
-    // Prompt-Template: Hier wird die Nutzereingabe eingesetzt
     private String applyPromptTemplate(String userMessage) {
-        String template = "You are a chatbot assistent for answering questions about the computer science faculty. Answer in german if question is in german:\n\n%s";
-        return String.format(template, userMessage);
+        return String.format(promptTemplate, userMessage);
     }
 
     public String chatWithTemplate(String message) {
