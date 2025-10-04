@@ -1,113 +1,152 @@
-# Spring AI RAG Tutorial with Ollama and PGVector
+# FSR Rag Chat Assistant
 
-This project demonstrates the implementation of Retrieval Augmented Generation (RAG) using Spring AI, Ollama, and PGVector Database. The application serves as a personal assistant that can answer questions about Spring Boot by referencing the Spring Boot Reference Documentation PDF.
+The FSR Rag Chat Assistant is a Retrieval Augmented Generation (RAG) chatbot designed to support the student council of the computer science faculty at the University of Leipzig. It leverages **Spring AI** for backend intelligence and **React + shadcn/ui + Vite** for a modern, responsive frontend.
+
+---
 
 ## Features
 
-- Uses Spring AI for RAG implementation
+- Uses Spring AI for RAG-based question answering
 - Integrates with Ollama for LLM capabilities
-- Stores and retrieves vector embeddings using PGVector
-- Automatically processes and ingests Spring Boot documentation
-- Provides REST API for question-answering
+- Stores and retrieves vector embeddings using PGVector (PostgreSQL)
+- Automatically processes and ingests documentation
+- REST API for chat interaction
+- Modern frontend built with React, shadcn/ui, and Vite
+
+---
 
 ## Architecture
 
 ### RAG Architecture
-![RAG Architecture](screenshots/rag_architecture.png)
 
-### Document Ingestion Pipeline
-![Document Ingestion Pipeline](screenshots/document_ingestion_pipeline.png)
+![RAG Architecture](images/rag_architecture.png)
+
+### Backend (Spring AI)
+
+- **Spring Boot** application with RAG pipeline
+- **Ollama** for local LLM inference (e.g., Mistral model)
+- **PGVector** for vector storage and retrieval
+- **Document ingestion** pipeline for knowledge base
+
+### Frontend (React + shadcn/ui + Vite)
+
+- Responsive UI with shadcn/ui components
+- Chat interface for user interaction
+- Connects to backend REST API
+
+---
+
+## Chat Interface
+
+![Chat GUI](images/chatgui.png)
+
+---
 
 ## Prerequisites
 
+### Backend
+
 - Java 21
-- Docker and Docker Compose
+- Docker & Docker Compose
 - Ollama installed locally
 - Maven
 
-## Setup Instructions
+### Frontend
+
+- Node.js (>=18)
+- npm
+
+---
+
+## Backend Setup
 
 1. **Install Ollama**
-   - Follow the installation instructions at [Ollama's official website](https://ollama.ai)
-   - Ensure Ollama is running on `http://localhost:11434`
+   - See [Ollama's official website](https://ollama.ai)
+   - Ensure Ollama runs at `http://localhost:11434`
 
 2. **Pull the Mistral Model**
    ```bash
    ollama pull mistral
    ```
-   Note: If you skip this step, the application will automatically pull the model when it first starts, which might take a few minutes.
 
 3. **Start PGVector Database**
    ```bash
    docker-compose up -d
    ```
-   This will start a PostgreSQL database with PGVector extension on port 5432.
 
-4. **Build the Application**
+4. **Build & Run Spring Boot Application**
    ```bash
    ./mvnw clean install
-   ```
-
-## Running the Application
-
-1. **Start the Spring Boot Application**
-   ```bash
    ./mvnw spring-boot:run
    ```
 
-2. The application will automatically:
-   - Initialize the vector store schema
-   - Load and process the Spring Boot reference PDF
-   - Start the REST API server
+---
+
+## Frontend Setup
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Start development server**
+   ```bash
+   npm run dev
+   ```
+
+3. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+4. **Preview production build**
+   ```bash
+   npm run preview
+   ```
+
+---
 
 ## Usage
 
-Send questions about Spring Boot to the API endpoint:
+- Ask questions via the web chat interface (React frontend)
+- Or via API:
+  ```bash
+  curl -X POST http://localhost:8080/api/chat \
+       -H "Content-Type: text/plain" \
+       -d "What is Spring Boot?"
+  ```
 
-```bash
-curl -X POST http://localhost:8080/api/chat \
-     -H "Content-Type: text/plain" \
-     -d "What is Spring Boot?"
-```
-
-## Technical Details
-
-- **Vector Database**: PGVector (PostgreSQL with vector extension)
-  - Database: vectordb
-  - Username: testuser
-  - Password: testpwd
-  - Port: 5432
-
-- **LLM Configuration**:
-  - Model: Mistral
-  - Base URL: http://localhost:11434
-  - Initialization timeout: 5 minutes
-  - Auto-pulls model if not available locally
-  - Pull strategy: when_missing
-
-- **Document Processing**:
-  - Uses Apache Tika for PDF reading
-  - Implements text splitting for optimal chunk size
-  - Automatically ingests documentation on startup
-
-## Project Structure
-
-- `ChatController`: Handles REST API requests
-- `DocumentIngestionService`: Processes and stores documentation
-- `application.properties`: Contains configuration for Ollama and PGVector
-- `compose.yml`: Docker composition for PGVector database
+---
 
 ## Troubleshooting
 
-1. Ensure Ollama is running and accessible at http://localhost:11434
-2. Verify that the PostgreSQL container is running: `docker ps`
-3. Check application logs for any initialization errors
-4. Ensure the Mistral model is properly pulled in Ollama
+- Ensure Ollama is running at `http://localhost:11434`
+- Verify PostgreSQL container is running: `docker ps`
+- Check backend logs for errors
+- Ensure Mistral model is pulled in Ollama
+
+---
 
 ## Dependencies
 
+### Backend
+
 - Spring Boot 3.4.3
-- Spring AI (version 1.0.0-M6)
+- Spring AI (1.0.0-M6)
 - PGVector
 - Apache Tika
-- Spring Boot Docker Compose Support
+
+### Frontend
+
+- React 19
+- shadcn/ui
+- Vite
+- Tailwind CSS
+- Lucide Icons
+
+---
+
+## Project Structure
+
+- `spring-ai-rag-ollama/` — Backend (Spring AI, Ollama, PGVector)
+- `fsr-rag-chat/` — Frontend (React + Vite)
