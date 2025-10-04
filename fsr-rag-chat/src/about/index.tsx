@@ -1,6 +1,4 @@
-import { Brain, BookOpen, Calendar, Users, MessageCircle, Sparkles } from "lucide-react"
-import { Link } from "react-router-dom"
-import { Button } from "@/components/ui/button"
+import { BookOpen, Calendar, Users, MessageCircle, Sparkles } from "lucide-react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function AboutPage() {
@@ -36,7 +34,6 @@ export default function AboutPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto space-y-8">
             <div className="text-center space-y-4">
-              <Brain className="h-12 w-12 text-primary mx-auto" />
               <h2 className="text-3xl md:text-4xl font-bold">Was ist RAG?</h2>
             </div>
             <Card className="bg-card/50 backdrop-blur">
